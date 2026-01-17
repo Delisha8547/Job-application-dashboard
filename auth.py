@@ -3,7 +3,10 @@ from google.oauth2.credentials import Credentials
 import os
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
-REDIRECT_URI = 'http://127.0.0.1:8000/oauth2callback'
+if "RENDER" in os.environ:  # You can set this environment variable on Render
+    REDIRECT_URI = "https://job-application-dashboard-ge4t.onrender.com/oauth2callback"
+else:
+    REDIRECT_URI = "http://127.0.0.1:8000/oauth2callback"
 
 def get_flow():
     return Flow.from_client_secrets_file(
@@ -20,3 +23,4 @@ def load_credentials():
     if os.path.exists('token.json'):
         return Credentials.from_authorized_user_file('token.json', SCOPES)
     return None
+
